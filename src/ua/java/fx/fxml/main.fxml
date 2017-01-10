@@ -48,12 +48,12 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin>
       </AnchorPane>
-      <AnchorPane prefHeight="159.0" prefWidth="455.0" VBox.vgrow="ALWAYS">
+      <AnchorPane prefHeight="160.0" prefWidth="455.0" VBox.vgrow="ALWAYS">
          <children>
             <TableView fx:id="tableAddressBook" layoutY="-37.0" prefHeight="172.0" prefWidth="455.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
               <columns>
-                <TableColumn prefWidth="200.0" text="ПІП" />
-                <TableColumn prefWidth="200.0" text="Телефон" />
+                <TableColumn fx:id="columnNameSorname" prefWidth="200.0" text="ПІП" />
+                <TableColumn fx:id="columnPhone" prefWidth="200.0" text="Телефон" />
               </columns>
                <opaqueInsets>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -72,7 +72,13 @@
       </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label fx:id="lableCount" text="Кількість записів: " />
+            <Label fx:id="lableCount" text="Кількість записів: " AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="5.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets></Label>
          </children>
       </AnchorPane>
       <HBox prefHeight="31.0" prefWidth="495.0" />

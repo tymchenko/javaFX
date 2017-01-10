@@ -6,6 +6,11 @@ public class Person {
     private String nameSorname;
     private String phone;
 
+    public Person(String nameSorname, String phone) {
+        this.nameSorname = nameSorname;
+        this.phone = phone;
+    }
+
     public String getNameSorname() {
         return nameSorname;
     }
@@ -21,5 +26,4 @@ public class Person {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 }

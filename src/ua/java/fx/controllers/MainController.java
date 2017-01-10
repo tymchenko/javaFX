@@ -1,21 +1,24 @@
 package ua.java.fx.controllers;
 
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ua.java.fx.interfaces.impls.CollectionAddressBook;
+import ua.java.fx.objects.Person;
 
 import java.io.IOException;
 
 public class MainController {
+
+    private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
 
     @FXML
     private Button btnAdd;
@@ -36,7 +39,33 @@ public class MainController {
     private TableView tableAddressBook;
 
     @FXML
+    private TableColumn <Person, String> columnNameSorname;
+
+    @FXML
+    private TableColumn <Person, String> columnPhone;
+
+    @FXML
     private Label lableCount;
+
+    @FXML
+    private void initialize(){
+        columnNameSorname.setCellValueFactory(new PropertyValueFactory<Person, String>("nameSorname"));
+        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
+
+        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
+            @Override
+            public void onChanged(Change<? extends Person> c) {
+                updateCountLabel();
+            }
+        });
+
+        addressBookImpl.fillTestData();
+        tableAddressBook.setItems(addressBookImpl.getPersonList());
+    }
+
+    private void updateCountLabel() {
+        lableCount.setText("Кількість записів: " + addressBookImpl.getPersonList().size());
+    }
 
     public void showDialog(ActionEvent actionEvent) {
 
