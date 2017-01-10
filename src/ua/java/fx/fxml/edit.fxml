@@ -33,7 +33,7 @@
                   <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnCancel" mnemonicParsing="false" prefWidth="100.0" text="Відміна">
+            <Button fx:id="btnCancel" cancelButton="true" mnemonicParsing="false" onAction="#actionClose" prefWidth="100.0" text="Відміна">
                <VBox.margin>
                   <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
                </VBox.margin>
