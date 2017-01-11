@@ -1,5 +1,6 @@
 package ua.java.fx.controllers;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,10 +16,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
 import ua.java.fx.interfaces.impls.CollectionAddressBook;
 import ua.java.fx.objects.Person;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -38,7 +42,7 @@ public class MainController implements Initializable{
     private Button btnDel;
 
     @FXML
-    private TextField txtSearch;
+    private CustomTextField txtSearch;
 
     @FXML
     private Button btnSearch;
@@ -67,12 +71,20 @@ public class MainController implements Initializable{
         tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         fillData();
+        setupClearButtonField(txtSearch);
         initListners();
-
-        addressBookImpl.fillTestData();
-        tableAddressBook.setItems(addressBookImpl.getPersonList());
-
+        fillData();
         initLoader();
+    }
+
+    private void setupClearButtonField(CustomTextField customTextField){
+        try{
+            Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+            m.setAccessible(true);
+            m.invoke(null, customTextField, customTextField.rightProperty());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void fillData() {

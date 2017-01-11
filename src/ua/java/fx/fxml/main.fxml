@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import org.controlsfx.control.textfield.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -41,8 +42,8 @@
       </HBox>
       <AnchorPane maxHeight="30.0" prefHeight="30.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <TextField fx:id="txtSearch" layoutY="14.0" prefHeight="34.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="155.0" />
-            <Button fx:id="btnSearch" layoutX="314.0" layoutY="13.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="150.0" text="%search" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="btnSearch" layoutX="305.0" layoutY="10.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="150.0" text="%search" AnchorPane.rightAnchor="0.0" />
+            <CustomTextField fx:id="txtSearch" layoutX="14.0" layoutY="10.0" prefHeight="34.0" prefWidth="268.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="160.0" />
          </children>
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
