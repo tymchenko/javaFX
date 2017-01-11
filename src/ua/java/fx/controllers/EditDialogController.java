@@ -24,16 +24,21 @@ public class EditDialogController {
     @FXML
     private Button btnCancel;
 
-    public void actionClose(ActionEvent actionEvent) {
-        Node source = (Node) actionEvent.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
-    }
-
     public void setPerson(Person person){
         this.person = person;
 
         txtNameSoname.setText(person.getNameSorname());
         txtPhone.setText(person.getPhone());
+    }
+    public void actionClose(ActionEvent actionEvent) {
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.hide();
+    }
+
+    public void actionSave(ActionEvent actionEvent){
+        person.setPhone(txtPhone.getText());
+        person.setNameSorname(txtNameSoname.getText());
+        actionClose(actionEvent);
     }
 }

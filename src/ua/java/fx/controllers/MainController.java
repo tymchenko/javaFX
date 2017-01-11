@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import ua.java.fx.interfaces.impls.CollectionAddressBook;
 import ua.java.fx.objects.Person;
 
@@ -47,6 +48,11 @@ public class MainController {
     @FXML
     private Label lableCount;
 
+    private Parent fxmlEdit;
+    private FXMLLoader fxmlLoader = new FXMLLoader();
+    private EditDialogController editDialogController;
+    private Stage editDialogStage;
+
     @FXML
     private void initialize(){
 
@@ -64,13 +70,23 @@ public class MainController {
 
         addressBookImpl.fillTestData();
         tableAddressBook.setItems(addressBookImpl.getPersonList());
+
+        try{
+
+            fxmlLoader.setLocation(getClass().getResource("../fxml/edit.fxml"));
+            fxmlEdit = fxmlLoader.load();
+            editDialogController = fxmlLoader.getController();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void updateCountLabel() {
         lableCount.setText("Кількість записів: " + addressBookImpl.getPersonList().size());
     }
 
-    public void showDialog(ActionEvent actionEvent) {
+    public void actionButtonPressed(ActionEvent actionEvent) {
 
         Object source = actionEvent.getSource();
 
@@ -82,35 +98,40 @@ public class MainController {
 
         Person selectedPerson = (Person) tableAddressBook.getSelectionModel().getSelectedItem();
 
+        Window parentWindow = ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        editDialogController.setPerson(selectedPerson);
+
         switch (clickedButton.getId()){
             case "btnAdd":
-                System.out.println("add " + selectedPerson);
                 break;
 
             case "btnEdit":
-                System.out.println("edit " + selectedPerson);
+                showDialog(parentWindow);
                 break;
 
             case "btnDel":
-                System.out.println("delete " + selectedPerson);
                 break;
         }
 
-        try{
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("../fxml/edit.fxml"));
-            stage.setTitle("Редагування запису");
-            stage.setMinHeight(150);
-            stage.setMinWidth(300);
-            stage.setResizable(false);
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
-            stage.show();
 
-        }catch(IOException e){
-            e.printStackTrace();
+    }
 
+    private void showDialog(Window parentWindow){
+
+        if(editDialogStage == null) {
+            editDialogStage = new Stage();
+            editDialogStage.setTitle("Редагування запису");
+            editDialogStage.setMinHeight(150);
+            editDialogStage.setMinWidth(300);
+            editDialogStage.setResizable(false);
+            editDialogStage.setScene(new Scene(fxmlEdit));
+            editDialogStage.initModality(Modality.WINDOW_MODAL);
+            editDialogStage.initOwner(parentWindow);
         }
+
+//        editDialogStage.showAndWait();
+
+        editDialogStage.show();
     }
 }

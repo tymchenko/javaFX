@@ -19,17 +19,17 @@
    <children>
       <HBox maxHeight="50.0" prefHeight="50.0" prefWidth="150.0" VBox.vgrow="NEVER">
          <children>
-            <Button fx:id="btnAdd" maxHeight="-Infinity" mnemonicParsing="false" onAction="#showDialog" prefHeight="70.0" prefWidth="150.0" text="Додати">
+            <Button fx:id="btnAdd" maxHeight="-Infinity" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="70.0" prefWidth="150.0" text="Додати">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnEdit" maxHeight="-Infinity" mnemonicParsing="false" onAction="#showDialog" prefHeight="70.0" prefWidth="150.0" text="Змінити">
+            <Button fx:id="btnEdit" maxHeight="-Infinity" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="70.0" prefWidth="150.0" text="Змінити">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btnDel" mnemonicParsing="false" onAction="#showDialog" prefHeight="70.0" prefWidth="150.0" text="Видалити">
+            <Button fx:id="btnDel" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="70.0" prefWidth="150.0" text="Видалити">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
