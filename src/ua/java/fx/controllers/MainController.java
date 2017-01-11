@@ -83,62 +83,6 @@ public class MainController implements Initializable{
         initLoader();
     }
 
-    private void setupClearButtonField(CustomTextField customTextField){
-        try{
-            Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
-            m.setAccessible(true);
-            m.invoke(null, customTextField, customTextField.rightProperty());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void fillData() {
-        addressBookImpl.fillTestData();
-        backupList = FXCollections.observableArrayList();
-        backupList.addAll(addressBookImpl.getPersonList());
-        tableAddressBook.setItems(addressBookImpl.getPersonList());
-    }
-
-    private void initLoader() {
-
-        try{
-
-            fxmlLoader.setLocation(getClass().getResource("../fxml/edit.fxml"));
-            fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("ua")));
-            fxmlEdit = fxmlLoader.load();
-            editDialogController = fxmlLoader.getController();
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void initListners() {
-
-        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
-            @Override
-            public void onChanged(Change<? extends Person> c) {
-                updateCountLabel();
-            }
-        });
-
-        tableAddressBook.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.getClickCount()==2){
-                    editDialogController.setPerson((Person) tableAddressBook.getSelectionModel().getSelectedItem());
-                    showDialog();
-                }
-            }
-        });
-
-    }
-
-    private void updateCountLabel() {
-        lableCount.setText(resourceBundle.getString("count") + ": " + addressBookImpl.getPersonList().size());
-    }
-
     public void actionButtonPressed(ActionEvent actionEvent) {
 
         Object source = actionEvent.getSource();
@@ -178,9 +122,64 @@ public class MainController implements Initializable{
                 addressBookImpl.delete(selectedPerson);
                 break;
         }
-
-
     }
+
+    private void setupClearButtonField(CustomTextField customTextField){
+        try{
+            Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+            m.setAccessible(true);
+            m.invoke(null, customTextField, customTextField.rightProperty());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void fillData() {
+        addressBookImpl.fillTestData();
+        backupList = FXCollections.observableArrayList();
+        backupList.addAll(addressBookImpl.getPersonList());
+        tableAddressBook.setItems(addressBookImpl.getPersonList());
+    }
+
+    private void initLoader() {
+
+        try{
+
+            fxmlLoader.setLocation(getClass().getResource("../fxml/edit.fxml"));
+            fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("en")));
+            fxmlEdit = fxmlLoader.load();
+            editDialogController = fxmlLoader.getController();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void initListners() {
+
+        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
+            @Override
+            public void onChanged(Change<? extends Person> c) {
+                updateCountLabel();
+            }
+        });
+
+        tableAddressBook.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==2){
+                    editDialogController.setPerson((Person) tableAddressBook.getSelectionModel().getSelectedItem());
+                    showDialog();
+                }
+            }
+        });
+    }
+
+    private void updateCountLabel() {
+        lableCount.setText(resourceBundle.getString("count") + ": " + addressBookImpl.getPersonList().size());
+    }
+
+
 
     private boolean personIsSelected(Person selectedPerson) {
         if(selectedPerson == null){

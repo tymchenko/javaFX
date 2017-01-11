@@ -17,7 +17,7 @@ public class Main extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("../fxml/main.fxml"));
-        fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("ua")));
+        fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("en")));
 
         Parent fxmlMain = fxmlLoader.load();
         MainController mainController = fxmlLoader.getController();
