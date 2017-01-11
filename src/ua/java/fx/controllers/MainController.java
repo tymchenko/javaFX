@@ -2,6 +2,7 @@ package ua.java.fx.controllers;
 
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -20,6 +22,7 @@ import java.io.IOException;
 public class MainController {
 
     private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
+    private Stage mainStage;
 
     @FXML
     private Button btnAdd;
@@ -58,18 +61,21 @@ public class MainController {
 
         tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        columnNameSorname.setCellValueFactory(new PropertyValueFactory<Person, String>("nameSorname"));
-        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
-
-        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
-            @Override
-            public void onChanged(Change<? extends Person> c) {
-                updateCountLabel();
-            }
-        });
+        fillData();
+        initListners();
 
         addressBookImpl.fillTestData();
         tableAddressBook.setItems(addressBookImpl.getPersonList());
+
+        initLoader();
+    }
+
+    private void fillData() {
+        columnNameSorname.setCellValueFactory(new PropertyValueFactory<Person, String>("nameSorname"));
+        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
+    }
+
+    private void initLoader() {
 
         try{
 
@@ -80,6 +86,27 @@ public class MainController {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    private void initListners() {
+
+        addressBookImpl.getPersonList().addListener(new ListChangeListener<Person>() {
+            @Override
+            public void onChanged(Change<? extends Person> c) {
+                updateCountLabel();
+            }
+        });
+
+        tableAddressBook.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getClickCount()==2){
+                    editDialogController.setPerson((Person) tableAddressBook.getSelectionModel().getSelectedItem());
+                    showDialog();
+                }
+            }
+        });
+
     }
 
     private void updateCountLabel() {
@@ -104,20 +131,25 @@ public class MainController {
 
         switch (clickedButton.getId()){
             case "btnAdd":
+                editDialogController.setPerson(new Person());
+                showDialog();
+                addressBookImpl.add(editDialogController.getPerson());
                 break;
 
             case "btnEdit":
-                showDialog(parentWindow);
+                editDialogController.setPerson((Person) tableAddressBook.getSelectionModel().getSelectedItem());
+                showDialog();
                 break;
 
             case "btnDel":
+                addressBookImpl.delete((Person) tableAddressBook.getSelectionModel().getSelectedItem());
                 break;
         }
 
 
     }
 
-    private void showDialog(Window parentWindow){
+    private void showDialog(){
 
         if(editDialogStage == null) {
             editDialogStage = new Stage();
@@ -127,11 +159,13 @@ public class MainController {
             editDialogStage.setResizable(false);
             editDialogStage.setScene(new Scene(fxmlEdit));
             editDialogStage.initModality(Modality.WINDOW_MODAL);
-            editDialogStage.initOwner(parentWindow);
+            editDialogStage.initOwner(mainStage);
         }
 
-//        editDialogStage.showAndWait();
+        editDialogStage.showAndWait();
+    }
 
-        editDialogStage.show();
+    public void setMainStage(Stage mainStage){
+        this.mainStage = mainStage;
     }
 }

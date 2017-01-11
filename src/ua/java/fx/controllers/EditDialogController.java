@@ -25,11 +25,18 @@ public class EditDialogController {
     private Button btnCancel;
 
     public void setPerson(Person person){
+        if(person == null){
+            return;
+        }
         this.person = person;
-
         txtNameSoname.setText(person.getNameSorname());
         txtPhone.setText(person.getPhone());
     }
+
+    public Person getPerson(){
+        return person;
+    }
+
     public void actionClose(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
