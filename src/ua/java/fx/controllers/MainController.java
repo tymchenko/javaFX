@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,8 +19,11 @@ import ua.java.fx.interfaces.impls.CollectionAddressBook;
 import ua.java.fx.objects.Person;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController implements Initializable{
 
     private CollectionAddressBook addressBookImpl = new CollectionAddressBook();
     private Stage mainStage;
@@ -55,10 +59,11 @@ public class MainController {
     private FXMLLoader fxmlLoader = new FXMLLoader();
     private EditDialogController editDialogController;
     private Stage editDialogStage;
+    private ResourceBundle resourceBundle;
 
-    @FXML
-    private void initialize(){
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.resourceBundle = resources;
         tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         fillData();
@@ -80,6 +85,7 @@ public class MainController {
         try{
 
             fxmlLoader.setLocation(getClass().getResource("../fxml/edit.fxml"));
+            fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("en")));
             fxmlEdit = fxmlLoader.load();
             editDialogController = fxmlLoader.getController();
 
@@ -110,7 +116,7 @@ public class MainController {
     }
 
     private void updateCountLabel() {
-        lableCount.setText("Кількість записів: " + addressBookImpl.getPersonList().size());
+        lableCount.setText(resourceBundle.getString("count") + ": " + addressBookImpl.getPersonList().size());
     }
 
     public void actionButtonPressed(ActionEvent actionEvent) {
@@ -153,7 +159,7 @@ public class MainController {
 
         if(editDialogStage == null) {
             editDialogStage = new Stage();
-            editDialogStage.setTitle("Редагування запису");
+            editDialogStage.setTitle(resourceBundle.getString("edit_address"));
             editDialogStage.setMinHeight(150);
             editDialogStage.setMinWidth(300);
             editDialogStage.setResizable(false);
@@ -168,4 +174,5 @@ public class MainController {
     public void setMainStage(Stage mainStage){
         this.mainStage = mainStage;
     }
+
 }

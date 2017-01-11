@@ -2,13 +2,17 @@ package ua.java.fx.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import ua.java.fx.objects.Person;
 
-public class EditDialogController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class EditDialogController implements Initializable{
 
     private Person person;
 
@@ -23,6 +27,8 @@ public class EditDialogController {
 
     @FXML
     private Button btnCancel;
+
+    private ResourceBundle resourceBundle;
 
     public void setPerson(Person person){
         if(person == null){
@@ -47,5 +53,10 @@ public class EditDialogController {
         person.setPhone(txtPhone.getText());
         person.setNameSorname(txtNameSoname.getText());
         actionClose(actionEvent);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.resourceBundle = resources;
     }
 }
