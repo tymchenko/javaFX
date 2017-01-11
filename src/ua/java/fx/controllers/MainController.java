@@ -1,7 +1,9 @@
 package ua.java.fx.controllers;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -64,13 +66,16 @@ public class MainController implements Initializable{
     private EditDialogController editDialogController;
     private Stage editDialogStage;
     private ResourceBundle resourceBundle;
+    private ObservableList<Person> backupList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
         tableAddressBook.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        fillData();
+        columnNameSorname.setCellValueFactory(new PropertyValueFactory<Person, String>("nameSorname"));
+        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
+
         setupClearButtonField(txtSearch);
         initListners();
         fillData();
@@ -88,8 +93,10 @@ public class MainController implements Initializable{
     }
 
     private void fillData() {
-        columnNameSorname.setCellValueFactory(new PropertyValueFactory<Person, String>("nameSorname"));
-        columnPhone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
+        addressBookImpl.fillTestData();
+        backupList = FXCollections.observableArrayList();
+        backupList.addAll(addressBookImpl.getPersonList());
+        tableAddressBook.setItems(addressBookImpl.getPersonList());
     }
 
     private void initLoader() {
@@ -187,4 +194,14 @@ public class MainController implements Initializable{
         this.mainStage = mainStage;
     }
 
+    public void actionSearch(ActionEvent actionEvent){
+        addressBookImpl.getPersonList().clear();
+
+        for(Person person : backupList){
+            if(person.getNameSorname().toLowerCase().contains(txtSearch.getText().toLowerCase())
+                || person.getPhone().toLowerCase().contains(txtSearch.getText().toLowerCase())){
+                addressBookImpl.getPersonList().add(person);
+            }
+        }
+    }
 }
