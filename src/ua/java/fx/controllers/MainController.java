@@ -22,6 +22,7 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import ua.java.fx.interfaces.impls.CollectionAddressBook;
 import ua.java.fx.objects.Person;
+import ua.java.fx.utils.DialogManager;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -104,7 +105,7 @@ public class MainController implements Initializable{
         try{
 
             fxmlLoader.setLocation(getClass().getResource("../fxml/edit.fxml"));
-            fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("en")));
+            fxmlLoader.setResources(ResourceBundle.getBundle("ua.java.fx.bundles.Locale", new Locale("ua")));
             fxmlEdit = fxmlLoader.load();
             editDialogController = fxmlLoader.getController();
 
@@ -162,16 +163,31 @@ public class MainController implements Initializable{
                 break;
 
             case "btnEdit":
-                editDialogController.setPerson((Person) tableAddressBook.getSelectionModel().getSelectedItem());
+                if(!personIsSelected(selectedPerson)){
+                    return;
+                }
+
+                editDialogController.setPerson(selectedPerson);
                 showDialog();
                 break;
 
             case "btnDel":
-                addressBookImpl.delete((Person) tableAddressBook.getSelectionModel().getSelectedItem());
+                if(!personIsSelected(selectedPerson)){
+                    return;
+                }
+                addressBookImpl.delete(selectedPerson);
                 break;
         }
 
 
+    }
+
+    private boolean personIsSelected(Person selectedPerson) {
+        if(selectedPerson == null){
+            DialogManager.showInfoDialog(resourceBundle.getString("error"), resourceBundle.getString("select_person"));
+            return false;
+        }
+        return true;
     }
 
     private void showDialog(){
